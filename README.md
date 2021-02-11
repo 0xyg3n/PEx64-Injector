@@ -5,5 +5,5 @@
 ![Code](https://i.imgur.com/PtOcuRU.png)
 #### Simply change the "payload" variable with your desired executable.
 #### A download/execute function can be implemented as well to load remote files.
-###### Special thanks to [GigaJew](github.com/gigajew/).
+###### Special thanks to [GigaJew](https://github.com/gigajew/).
 ______________________
