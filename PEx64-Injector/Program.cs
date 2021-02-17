@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace PEx64_Injector
 {
     //if not working make sure unsafe code is enabled from build options.
-    public static class gigajew
+    public static class Migrate
     {
         //special thanks to gigajew.
         #region dllimport
@@ -133,20 +133,27 @@ namespace PEx64_Injector
     }
     class Program
     {
-        static void Main()
+        static void Main(string[] args)
         {
-            // The file you want to inject.
-            string payload = @"C:\Users\dev\Desktop\putty64.exe";
-            
-            // The executable you want to inject to (hostfile)
-            string hostexe = @"C:\Windows\System32\notepad.exe";
-
-            // any arguments if cmd.exe eg: /c arg1 arg1
-            string arguments = "";
-
-            // finally inject
-            gigajew.Load(File.ReadAllBytes(payload), hostexe, arguments);
-
+            try
+            {
+                if (args.Length == 0)
+                {
+                    Console.WriteLine("\n\n[*]Developed By 0xyg3n\n\n[!]Invalid Arguments Specified..\n\n[*]Usage: Migrator.exe payload(fpath) Migratefile(fpath)\n\n[*]Example: Migrator.exe C:\\Users\\User\\Desktop\\Putty64.exe C:\\Windows\\System32\\notepad.exe\n\n");
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    // The file you want to inject.
+                    string payload = args[0];
+                    // The executable you want to inject to (hostfile)
+                    string migratefile = args[1];
+                    string arguments = ""; // screw the args.
+                    Migrate.Load(File.ReadAllBytes(payload), migratefile, arguments);
+                    Console.WriteLine("\n\n[*]Migrated Succesfully!");
+                }
+            }
+            catch (Exception ex) { Console.WriteLine("\n\n[*]Migration Failed!"); }
         }
     }
 }

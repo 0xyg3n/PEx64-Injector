@@ -7,7 +7,7 @@
     <ProjectGuid>{9B7C391A-64DF-4AC0-B9A2-CCFF85C13C26}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>PEx64_Injector</RootNamespace>
-    <AssemblyName>PEx64-Injector</AssemblyName>
+    <AssemblyName>Migrator</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
