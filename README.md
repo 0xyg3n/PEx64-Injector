@@ -1,6 +1,7 @@
 > # PEx64-Injector (Process Migrator)
 
 > #### Migrate any x64 exe to any x64 process (Net FrameWork 3.5)
+> #### No Administrator privileges required.
 > ##### GIF Demo
 > ![PoC](https://i.imgur.com/gILIbbd.gif)
 > ### How can be used?
