@@ -1,10 +1,15 @@
-> # PEx64-Injector
-#### Inject any x64 exe to any x64 process.
+> # PEx64-Injector (Process Migrator)
+
+#### Migrate any x64 exe to any x64 process.
 ![PoC](https://i.imgur.com/gILIbbd.gif)
 > ### How can be used?
-#### Such tool can be utilized for AV evasion, masking malicious software under legitimate process.
-![Code](https://i.imgur.com/PtOcuRU.png)
-#### Simply change the "payload" variable with your desired executable.
-#### A download/execute function can be implemented as well to load remote files.
+> ![shot](https://i.imgur.com/0EGhY2r.png)
+> #### Usage: Migrator.exe payload(fpath) Migratefile(fpath)
+> #### Example: Migrator.exe C:\Users\User\Desktop\Putty64.exe C:\Windows\System32\notepad.exe
+
+> #### Such tool can be utilized for AV evasion, masking malicious software under legitimate process.
+![Code](https://i.imgur.com/OTyHK8b.png)
+
+###### Todo: download/execute function to load remote files.
 ###### Special thanks to [GigaJew](https://github.com/gigajew/).
 ______________________
