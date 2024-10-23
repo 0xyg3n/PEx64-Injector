@@ -143,7 +143,7 @@ namespace PEx64_Injector
             {
                 if (args.Length < 2)
                 {
-                    Console.WriteLine("\n\n[*] Developed By 0xyg3n\n\n[!] Invalid Arguments Specified..\n\n[*] Usage: Migrator.exe payload(fpath or URL) migratefile(fpath)\n\n[*] Example: Migrator.exe C:\\Users\\User\\Desktop\\Putty64.exe C:\\Windows\\System32\\notepad.exe\n\n");
+                    Console.WriteLine("\n\n[*] Developed By 0xyg3n\n\n[!] Invalid Arguments Specified..\n\n[*] Usage: Migrator.exe payload(fpath or URL) migratefile(fpath)\n\n[*] Example: Migrator.exe C:\\Users\\User\\Desktop\\Putty64.exe C:\\Windows\\System32\\notepad.exe\n[*] Example: Migrator.exe https://the.earth.li/~sgtatham/putty/latest/w64/putty.exe C:\\Windows\\System32\\notepad.exe\n\n");
                     Environment.Exit(0);
                 }
                 else
